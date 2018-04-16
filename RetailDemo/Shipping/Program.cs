@@ -18,7 +18,7 @@ namespace Shipping
                 //the only difference is the name "Sales" in the console title and Endpoint Configuartion constructor
                 //this means the Sales endpoint will create its own queue where it will listen for messages
                 //two processes with their own queues but can now send messages between them
-                var endpointConfiguration = new EndpointConfiguration("Billing");
+                var endpointConfiguration = new EndpointConfiguration("Shipping");
 
                 var transport = endpointConfiguration.UseTransport<MsmqTransport>();
                 endpointConfiguration.UsePersistence<InMemoryPersistence>();
@@ -29,7 +29,9 @@ namespace Shipping
                 routing.RegisterPublisher(typeof(OrderPlaced), "Sales");
                 routing.RegisterPublisher(typeof(OrderBilled), "Billing");
 
-            var endpointInstance = await Endpoint.Start(endpointConfiguration)
+                endpointConfiguration.UseSerialization<JsonSerializer>();
+
+                var endpointInstance = await Endpoint.Start(endpointConfiguration)
                     .ConfigureAwait(false);
 
                 Console.WriteLine("Press Enter to exit");

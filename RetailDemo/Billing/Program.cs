@@ -28,6 +28,8 @@ namespace Billing
             var routing = transport.Routing();
             routing.RegisterPublisher(typeof(OrderPlaced), "Sales");
 
+            endpointConfiguration.UseSerialization<JsonSerializer>();
+
             var endpointInstance = await Endpoint.Start(endpointConfiguration)
                 .ConfigureAwait(false);
 

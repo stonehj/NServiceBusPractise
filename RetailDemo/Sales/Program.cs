@@ -27,6 +27,8 @@ namespace Sales
             var recoverability = endpointConfiguration.Recoverability();
             recoverability.Delayed(delayed => delayed.NumberOfRetries(0));
 
+            endpointConfiguration.UseSerialization<JsonSerializer>();
+
             var endpointInstance = await Endpoint.Start(endpointConfiguration)
                 .ConfigureAwait(false);
 
